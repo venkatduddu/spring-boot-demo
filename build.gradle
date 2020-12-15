@@ -36,3 +36,17 @@ application {
 test {
 	useJUnitPlatform()
 }
+
+tasks.register("codeCoverageReport", JacocoReport) {
+    executionData file("${project.buildDir}/jacoco/test.exec")
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination = file("$project.buildDir/reports/jacoco/test")
+    }
+    
+    doLast {
+        def report = file("${jacoco.reportsDir}/test/jacocoTestReport.xml")
+        //checkCoverage(report, "Unit Test")
+    }
+}
