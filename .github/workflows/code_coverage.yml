@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: codeClimate
+name: codeCoverage
 
 # Controls when the action will run. 
 on:
@@ -28,15 +28,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
-
-      - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v2.7.5
-        env:
-      # Set CC_TEST_REPORTER_ID as secret of your repo
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-          JACOCO_SOURCE_PATH: "${{github.workspace}}/src/main/java"
-        
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew clean test codeCoverageReport
+      - name: Code Coverage
+      - uses: codecov/codecov-action@v1
         with:
-      # The report file must be there, otherwise Code Climate won't find it
-          coverageCommand: ./gradlew clean test codeCoverageReport
-          coverageLocations: ${{github.workspace}}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml:jacoco
+          file: ${{github.workspace}}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml
