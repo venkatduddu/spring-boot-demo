@@ -32,5 +32,5 @@ jobs:
       - name: Code Coverage
         uses: codecov/codecov-action@v1
         with:
-          token: a276d228-7c4c-42ef-95b8-c3c51c870a51 
+          token: ${{ secrets.CODE_COV_TOKEN }}
           file: ${{github.workspace}}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml
